@@ -28,6 +28,15 @@ npm install
 yarn install
 ```
 
+### Configure .env
+
+Rename the `.env.sample` file to `.env` and configure the two environment variables inside.
+
+| environment variable | description |
+| -------------------- | ----------- |
+| REACT_APP_MQTT_BROKER | The hostname to the mqtt broker |
+| REACT_APP_MQTT_PORT | The port to conect to the mqtt broker (default is 11883 if websockets is enabled through broker) |
+
 ### Build webapp
 
 Third, build the webapp using npm/yarn.

@@ -4,6 +4,9 @@ author(s): khuynh, rokamura
 ## Description
 A simple react web app used for debugging mqtt communication. It is built using [create-react-app](https://github.com/facebook/create-react-app) and uses the [paho.mqtt.javascript](https://github.com/eclipse/paho.mqtt.javascript) library.
 
+![app](assets/app.png)
+![terminal](assets/terminal.png)
+
 ## Usage
 
 ### Cloning the Repository

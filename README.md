@@ -39,7 +39,7 @@ Rename the `.env.sample` file to `.env` and configure the two environment variab
 
 ### Build webapp
 
-Third, build the webapp using npm/yarn.
+Lastly, build the webapp using npm/yarn.
 
 ```
 npm build

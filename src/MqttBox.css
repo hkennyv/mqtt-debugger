@@ -1,7 +1,31 @@
-.mqttbox {
+.hidden {
+    display: none;
+}
+
+.mqttArea {
+    margin: 10px 0px;
+    width: 100%;
+}
+
+.mqttInput {
     display: flex;
+    flex-direction: column;
+    height: 200px;
+    justify-content: space-evenly;
+    margin: 10px 0px;
+    width: 100%;
+}
+
+.mqttOutput {
+    display: flex;
+    height: 200px;
     justify-content: space-evenly;
     width: 100%;
+}
+
+.outgoingInput {
+    margin: 0px auto;
+    width: 80%;
 }
 
 textarea {

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Client } from 'paho-mqtt';
+import { Container, Input } from 'semantic-ui-react';
 import StaticBox from './StaticBox';
 import MessageBox from './MessageBox';
 import './MqttBox.css';
@@ -14,6 +15,11 @@ class MqttBox extends React.Component {
             topicInput1: '',
             topic2: '',
             topicInput2: '',
+
+            outgoingTopic: '',
+            outgoingMsg: '',
+            outgoingTopicInput: '',
+            outgoingMsgInput: '',
         }
 
         this.onConnect = this.onConnect.bind(this);
@@ -22,6 +28,8 @@ class MqttBox extends React.Component {
         this.renderMessages = this.renderMessages.bind(this);
     }
 
+    outgoingTopicOnChange = (e, { value }) => this.setState({ outgoingTopic: value });
+    outgoingMsgOnChange = (e, { value }) => this.setState({ outgoingMsg: value });
     onChangeInput1 = (e, { value }) => this.setState({ topicInput1: value });
     onChangeInput2 = (e, { value }) => this.setState({ topicInput2: value });
     onSubmitInput1 = e => {
@@ -47,6 +55,14 @@ class MqttBox extends React.Component {
         // this.client.unsubscribe(topic2);
         this.setState({ topic2: topicInput2 });
         this.client.subscribe(topicInput2);
+    }
+    onOutgoingSubmit = e => {
+        e.preventDefault();
+        console.log('something');
+        const { outgoingMsg, outgoingTopic } = this.state;
+        if (!outgoingMsg || !outgoingTopic) return;
+        this.client.send(outgoingTopic, outgoingMsg);
+        this.setState({ outgoingMsg: '', outgoingTopic: '' });
     }
 
     componentDidMount() {
@@ -104,21 +120,38 @@ class MqttBox extends React.Component {
     }
 
     render() {
-        const { messageTopic1, messagesTopic2, topic1, topic2 } = this.state;
+        const {
+            messageTopic1, messagesTopic2, topic1, topic2,
+            outgoingTopic, outgoingMsg,
+        } = this.state;
         return (
-            <div className="mqttbox">
-                <StaticBox
-                    onChangeInput1={this.onChangeInput1}
-                    onSubmitInput1={this.onSubmitInput1}
-                    message={messageTopic1}
-                    topic={topic1}
-                />
-                <MessageBox
-                    onChangeInput2={this.onChangeInput2}
-                    onSubmitInput2={this.onSubmitInput2}
-                    messages={messagesTopic2}
-                    topic={topic2}
-                />
+            <div className="mqttArea">
+                <form className="mqttInput" onSubmit={this.onOutgoingSubmit} >
+                    {/* <div className="mqttInput"> */}
+                        <h3>Outgoing</h3>
+                        {/* <div className="outgoingInput"> */}
+                            <Input className="outgoingInput" fluid size="mini" label="topic:" value={outgoingTopic} onChange={this.outgoingTopicOnChange} />
+                        {/* </div> */}
+                        {/* <div className="outgoingInput"> */}
+                            <Input className="outgoingInput" fluid size="mini" label="msg:" value={outgoingMsg} onChange={this.outgoingMsgOnChange} />
+                        {/* </div> */}
+                        <button className="hidden" />
+                    {/* </div> */}
+                </form>
+                <div className="mqttOutput">
+                    <StaticBox
+                        onChangeInput1={this.onChangeInput1}
+                        onSubmitInput1={this.onSubmitInput1}
+                        message={messageTopic1}
+                        topic={topic1}
+                    />
+                    <MessageBox
+                        onChangeInput2={this.onChangeInput2}
+                        onSubmitInput2={this.onSubmitInput2}
+                        messages={messagesTopic2}
+                        topic={topic2}
+                    />
+                </div>
             </div>
         );
     }

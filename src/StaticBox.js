@@ -6,10 +6,10 @@ const StaticBox = props => {
     const { onChangeInput1, onSubmitInput1 } = props;
 
     return (
-        <div className="mqttarea">
+        <div className="msgbox">
             <p>Subscribed to: {topic}</p>
             <form onSubmit={onSubmitInput1}>
-                <Input size="mini" label="Topic:" onChange={onChangeInput1} />
+                <Input fluid size="mini" label="Topic:" onChange={onChangeInput1} />
             </form>
             <TextArea rows={5} value={message} />
         </div>

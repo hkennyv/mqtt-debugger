@@ -2,7 +2,11 @@ import React from 'react';
 import { Input, TextArea } from 'semantic-ui-react';
 
 function renderMessages(messages) {
-    return messages.join('\n');
+    try {
+        return messages.map(msg => JSON.stringify(JSON.parse(msg), null, 2)).join('\n');
+    } catch (err) {
+        return messages.join('\n');
+    }
 }
 
 const MessageBox = props => {
@@ -10,10 +14,10 @@ const MessageBox = props => {
     const { onChangeInput2, onSubmitInput2 } = props;
 
     return (
-        <div>
+        <div className="msgbox">
             <p>Subscribed to: {topic}</p>
             <form onSubmit={onSubmitInput2}>
-                <Input size="mini" label="Topic:" onChange={onChangeInput2} />
+                <Input fluid size="mini" label="Topic:" onChange={onChangeInput2} />
             </form>
             <TextArea rows={5} value={renderMessages(messages)} />
         </div>

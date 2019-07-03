@@ -23,6 +23,10 @@
     width: 100%;
 }
 
+.msgbox {
+    width: 35%;
+}
+
 .outgoingInput {
     margin: 0px auto;
     width: 50%;

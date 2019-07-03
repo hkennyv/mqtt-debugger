@@ -1,4 +1,5 @@
 import React from 'react';
+import { Container } from 'semantic-ui-react';
 import MqttBox from './MqttBox';
 import './App.css';
 
@@ -7,11 +8,17 @@ function App() {
   console.log(process.env);
   return (
     <div className="App">
-      <header className="App-header">
-        <small>You are running this application in <b>{process.env.NODE_ENV}</b> mode.</small>
-        <small>MQTT broker: {process.env.REACT_APP_MQTT_BROKER}</small>
-        <MqttBox />
-      </header>
+      <Container>
+        <header className="App-header">
+          <p>
+            <small>You are running this application in <strong>{process.env.NODE_ENV}</strong> mode.</small>
+          </p>
+          <p>
+            <small>[MQTT broker] {process.env.REACT_APP_MQTT_BROKER}:{process.env.REACT_APP_MQTT_PORT}</small>
+          </p>
+          <MqttBox />
+        </header>
+      </Container>
     </div>
   );
 }

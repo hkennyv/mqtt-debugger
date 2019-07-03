@@ -9,7 +9,7 @@ class MqttBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      messageTopic1: "",
+      messagesTopic1: [],
       messagesTopic2: [],
       topic1: "",
       topicInput1: "",
@@ -25,7 +25,6 @@ class MqttBox extends React.Component {
     this.onConnect = this.onConnect.bind(this);
     this.onConnectionLost = this.onConnectionLost.bind(this);
     this.onMessageArrived = this.onMessageArrived.bind(this);
-    this.renderMessages = this.renderMessages.bind(this);
   }
 
   outgoingTopicOnChange = (e, { value }) =>
@@ -90,12 +89,23 @@ class MqttBox extends React.Component {
 
   onMessageArrived(message) {
     const { destinationName, payloadString } = message;
-    const { messagesTopic2, messageTopic1, topic1, topic2 } = this.state;
+    const { messagesTopic2, messagesTopic1, topic1, topic2 } = this.state;
 
     console.log(destinationName, topic1, topic2);
     switch (destinationName) {
       case topic1:
-        this.setState({ messageTopic1: payloadString });
+        if (messagesTopic1.length === 5) {
+          this.setState(prevState => ({
+            messagesTopic1: [
+              ...prevState.messagesTopic1.slice(1, 5),
+              payloadString
+            ]
+          }));
+        } else {
+          this.setState(prevState => ({
+            messagesTopic1: [...prevState.messagesTopic1, payloadString]
+          }));
+        }
         break;
       case topic2:
         if (messagesTopic2.length === 5) {
@@ -119,23 +129,9 @@ class MqttBox extends React.Component {
     }
   }
 
-  renderMessages() {
-    const { messagesTopic2 } = this.state;
-    return (
-      <div>
-        <h4>MsgBox</h4>
-        {messagesTopic2.map(msg => (
-          <p>
-            [{msg.destinationName}] {msg.payloadString}
-          </p>
-        ))}
-      </div>
-    );
-  }
-
   render() {
     const {
-      messageTopic1,
+      messagesTopic1,
       messagesTopic2,
       topic1,
       topic2,
@@ -171,15 +167,15 @@ class MqttBox extends React.Component {
           {/* </div> */}
         </form>
         <div className="mqttOutput">
-          <StaticBox
-            onChangeInput1={this.onChangeInput1}
-            onSubmitInput1={this.onSubmitInput1}
-            message={messageTopic1}
+          <MessageBox
+            onChangeInput={this.onChangeInput1}
+            onSubmitInput={this.onSubmitInput1}
+            messages={messagesTopic1}
             topic={topic1}
           />
           <MessageBox
-            onChangeInput2={this.onChangeInput2}
-            onSubmitInput2={this.onSubmitInput2}
+            onChangeInput={this.onChangeInput2}
+            onSubmitInput={this.onSubmitInput2}
             messages={messagesTopic2}
             topic={topic2}
           />
